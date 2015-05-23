@@ -1,15 +1,44 @@
 
+library(dplyr)
+library(reshape2)
+
 loadData <- function (datasetFlag, datasetFolder, columnLabels, activityLabels){
   featureSetPath <- file.path(datasetFolder, datasetFlag, 
                               paste('X_', datasetFlag, '.txt',sep='') )
   activitySetPath <- file.path(datasetFolder, datasetFlag, 
                                paste('y_', datasetFlag, '.txt',sep='') )
+  subjectSetPath <- file.path(datasetFolder, datasetFlag, 
+                               paste('subject_', datasetFlag, '.txt',sep='') )
+    
   message(paste('Loading: ', featureSetPath))
-  dataFrame <- read.table(activitySetPath)
-  #names(dataFrame) <- columnLabels
-  print(names(dataFrame))
   
+  # Load the feature set
+  featureFrame <- read.table(featureSetPath, col.names = columnLabels)
   
+  message(paste('Loading: ', activitySetPath))
+  
+  # Load the activity set
+  activityFrame <- read.table(activitySetPath)
+  activityFrame$ActivityName <- factor(activityFrame$V1, labels = activityLabels )
+  
+  message(paste('Loading: ', subjectSetPath))
+  
+  #Load the subject set
+  subjectFrame <- read.table(subjectSetPath, col.names = 'SubjectNumber')
+  
+  # Rather than continue to work on the full dataset lets get only the columns
+  # that we want to work on. Grep for those with mean() or std() in the name
+  # See README.md for my choice behind columns
+  meanColumns = grep(x = columnLabels, pattern = 'mean()', fixed = TRUE )
+  stdColumns = grep(x = columnLabels, pattern = 'std()', fixed = TRUE )
+  
+  featureFrame <- featureFrame[,sort(c(meanColumns,stdColumns))]
+
+  # Attach the subject and activity details to the frame
+  featureFrame$ActivityName <- activityFrame$ActivityName
+  featureFrame$SubjectNumber <- subjectFrame$SubjectNumber
+
+  tbl_df(featureFrame)
 }
 
 
@@ -32,7 +61,20 @@ main <- function () {
     activityNames <- read.table(file.path(datasetFolder,'activity_labels.txt'))$V2
     
     testData <- loadData('test', datasetFolder, columnNames, activityNames)
+    trainData <- loadData('train', datasetFolder, columnNames, activityNames)
     
+    fullData <- rbind(trainData, testData)
+    
+    activitySubjectGroup <- group_by(fullData, ActivityName, SubjectNumber)
+    tidyData <- summarise_each(activitySubjectGroup, funs(mean))
+    
+    names(tidyData) <- gsub(".", "-", fixed = TRUE,
+                            x = gsub("..", "", fixed = TRUE, 
+                                     x = gsub("...", ".", fixed = TRUE, x=names(tidyData) ) 
+                                     )
+                            )
+    
+    write.table(tidyData,'tidyData.txt', row.names = FALSE )
   } else {
     warning("We are missing the data set folder from the script location")
   }
