@@ -60,27 +60,37 @@ main <- function () {
     # Get the vector of activity names
     activityNames <- read.table(file.path(datasetFolder,'activity_labels.txt'))$V2
     
+    # Load the test and training datasets
     testData <- loadData('test', datasetFolder, columnNames, activityNames)
     trainData <- loadData('train', datasetFolder, columnNames, activityNames)
     
+    # Row bind the two together
     fullData <- rbind(trainData, testData)
     
+    # Group by the ActivityName and the SubjectNumber and summarise each variable
+    # by the mean
     activitySubjectGroup <- group_by(fullData, ActivityName, SubjectNumber)
     tidyData <- summarise_each(activitySubjectGroup, funs(mean))
     
+    # Finally tidy up the variable names removing the '.' from the name and 
+    # making them generally easier to read
     names(tidyData) <- gsub(".", "-", fixed = TRUE,
                             x = gsub("..", "", fixed = TRUE, 
                                      x = gsub("...", ".", fixed = TRUE, x=names(tidyData) ) 
                                      )
                             )
-    
-    write.table(tidyData,'tidyData.txt', row.names = FALSE )
   } else {
     warning("We are missing the data set folder from the script location")
   }
   
-  # Finally flip back to the old working directory
+  # Finally flip back to the users old working directory
   setwd(existingWD)
+  
+  # If we created the tidyData variable lets write the tidyData to the where 
+  # the user had their working directory
+  if(exists('tidyData')){
+    write.table(tidyData,'tidyData.txt', row.names = FALSE )
+  }
 }
 
 main()
