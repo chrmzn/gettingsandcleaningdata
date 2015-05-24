@@ -12,6 +12,6 @@ For an indepth explaination of what exactly each variable means see [features_in
 
 ## Study Design
 
-The data was collected by having 30 volunteers perform certain activites while wearing a Samsung Galaxy S2 on their waist. The measurements are taken form the embedded accelerometer and gyroscope. Further information is available in "UCI HAR Dataset/README.txt"
+The data was collected by having 30 volunteers perform certain activites while wearing a Samsung Galaxy S2 on their waist. The measurements are taken form the embedded accelerometer and gyroscope. Further information is available in ['README.txt'](UCI HAR Dataset/README.txt)
 
 As requested the tidy dataset is all the mean and standard deviation measurements from the raw data averaged by each activity and subject. 
