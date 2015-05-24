@@ -53,15 +53,25 @@ Each row in the tidy data is the mean of all the observations by activity and su
 
 All the data for this has been submitted in one table and this is because **ALL** the tidy data represents the `mean()` of all the underlying raw data.  
 
-There are a few other reasons that it would be impractical to submit this in separate files
-
-* How we were requested submit the data
+I would also argue that how we were requested submit the data is also a factor in this.
 
 *Please upload your data set as a txt file created with write.table*
 
 So we have to submit one text file created with `write.table()` which doesn't really work with creating separate tables easily (It's probably possible but not without additional hacks around `read.table()`). 
 
+### Human Readable Variable Names
 
+I have kept the much of the original names from the raw data as possibel as I would argue that they are descriptive of the statistic they measure and that expanding on the names doesn't make them any more descriptive of the underlying value ([Course Discussion on the topic](https://class.coursera.org/getdata-014/forum/thread?thread_id=179#post-1313))
 
+However I have made two small adjustments...
 
+* Cleaned up the variable names. During the script the '-', '(' and ')' characters were converted to '.' and so I removed many of them and replaced them with '-'
+* Prefixed all of the summary statistics with 'Mean-' to represent these are a mean of means or standard deviations. 
 
+## Summary
+
+As you can see I provided a tidy data set from the raw set we were given than conforms to the principals of tidy data. 
+
+I also provided both a CODEBOOK with an containing an explanation of the variables and overall study design and an INSTRUCTION list with steps to execute run_analysis.R to create the tidy data set
+
+Hopefully you have enjoyed reviewing the project and it made some sense to you!! 
