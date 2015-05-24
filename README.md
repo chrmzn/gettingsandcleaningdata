@@ -17,7 +17,7 @@ This would involve...
 ## Contents
 
 * [CODEBOOK.md](CODEBOOK.md) - Information about the variables in the tidy data (explanation and units) and how the data was collected and summarised
-* [INSTRUCTIONS.md](Instructions.md) - Instructions on how to execute the run_analysis.R file
+* [INSTRUCTIONS.md](INSTRUCTIONS.md) - Instructions on how to execute the run_analysis.R file
 * [run_analysis.R](run_analysis.R) - The script that creates the tidy data from the raw data
 * [UCI HAR Dataset](UCI HAR Dataset) - The raw data on Human Activity Recognition sourced from [Irvine Machine Learning Repository](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones)
 * [tidyData.txt](tidyData.txt) - The tidy data; an average of the mean and standard deviation variables from the raw data grouped by activity and subject number
